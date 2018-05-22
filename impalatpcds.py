@@ -1,3 +1,6 @@
+!pip install thrift==0.9.3
+!pip install thrift_sasl
+!pip install impyla
 #impyla_example.py
 import os
 # Specify IMPALA_HOST as an environment variable in your project settings
@@ -16,7 +19,7 @@ cursor.execute('SHOW DATABASES')
 # Pretty output using Pandas
 databases = as_pandas(cursor)
 databases
-cursor.execute('USE tpcds_10_decimal_parquet    ')
+cursor.execute('USE tpcds_10_decimal_parquet')
 cursor.execute('select * from store_sales limit 5')
 query_result = as_pandas(cursor)
 query_result
