@@ -13,13 +13,16 @@ from impala.util import as_pandas
 # * If you have not already established your Kerberos credentials in CDSW do so before running this script.
 # * Remove auth_mechanism and use_ssl parameters on non-secure clusters.
 conn = connect(host=IMPALA_HOST, port=21050, auth_mechanism='GSSAPI', use_ssl=False)
-# Get the available tables
 cursor = conn.cursor()
-cursor.execute('SHOW DATABASES')
-# Pretty output using Pandas
-databases = as_pandas(cursor)
-databases
 cursor.execute('USE tpcds_10_decimal_parquet')
-cursor.execute('select * from store_sales limit 5')
-query_result = as_pandas(cursor)
-query_result
+# Read the sql file
+query_file = open('tpcds.sql', 'r').read()
+print query_file
+queries = query_file.split(';')
+for cmd in queries:
+  cmd = cmd.replace('/r','')
+  cmd = cmd.replace('/n','')
+  print cmd
+  cursor.execute(cmd) 
+result = as_pandas(cursor)
+result
