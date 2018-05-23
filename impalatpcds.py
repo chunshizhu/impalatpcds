@@ -12,12 +12,11 @@ from impala.util import as_pandas
 #
 # * If you have not already established your Kerberos credentials in CDSW do so before running this script.
 # * Remove auth_mechanism and use_ssl parameters on non-secure clusters.
+# Read the sql file
 conn = connect(host=IMPALA_HOST, port=21050, auth_mechanism='GSSAPI', use_ssl=False)
 cursor = conn.cursor()
 cursor.execute('USE tpcds_10_decimal_parquet')
-# Read the sql file
 query_file = open('tpcds.sql', 'r').read()
-print query_file
 queries = query_file.split(';')
 for cmd in queries:
   cmd = cmd.replace('/r','')
@@ -26,3 +25,4 @@ for cmd in queries:
   cursor.execute(cmd) 
 result = as_pandas(cursor)
 result
+conn.close()
